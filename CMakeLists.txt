@@ -1,40 +1,20 @@
 cmake_minimum_required(VERSION 3.10)
+project(rmq_experiments)
 
-# Set the project name
-project(MyProject)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -O3")
 
-# Set C++ standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD 20)
 
-# Add the directories containing header files
-include_directories(utils)
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
+if (COMPILER_SUPPORTS_MARCH_NATIVE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+endif ()
 
-# Add subdirectories (assuming each submodule in 'competitors' has its own CMakeLists.txt)
+add_subdirectory(benchmark)
+
+add_subdirectory(experiments)
+
 add_subdirectory(competitors)
 
-# Define the source files for benchmark
-set(BENCHMARK_SOURCES
-    benchmark/main.cpp
-    # Add other source files from benchmark folder here
-)
-
-# Define the source files for experiments
-set(EXPERIMENTS_SOURCES
-    experiments/main.cpp
-    # Add other source files from experiments folder here
-)
-
-# Add the executables
-add_executable(benchmark ${BENCHMARK_SOURCES})
-add_executable(experiments ${EXPERIMENTS_SOURCES})
-
-# Link libraries from competitors if needed (example assuming a competitor library is generated)
-# target_link_libraries(benchmark PRIVATE competitor_lib)
-# target_link_libraries(experiments PRIVATE competitor_lib)
-
-# Set the output directory for executables
-set_target_properties(benchmark experiments
-    PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build
-)
+add_subdirectory(tests)

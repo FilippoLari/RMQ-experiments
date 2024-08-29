@@ -1,8 +1,14 @@
+#pragma once
+
 #include <string>
 #include <vector>
 #include <chrono>
+#include <fstream>
+#include <map>
 
 #include "statistics.hpp"
+
+using query_type = std::pair<size_t, size_t>;
 
 using timer = std::chrono::high_resolution_clock;
 
@@ -11,48 +17,70 @@ void do_not_optimize(T const &value) {
     asm volatile("" : : "r,m"(value) : "memory");
 }
 
-template<class RMQ, typename T>
+template<typename T, typename BuildTimeFormat = std::chrono::seconds,
+         typename QueriesTimeFormat = std::chrono::nanoseconds>
 class Benchmark {
 
-    std::string algorithm;
+    std::vector<T> data;
 
-    construction_stats c_stats;
-    std::vector<queries_stats> q_stats;
+    // queries are grouped by range size
+    std::map<size_t, std::vector<query_type>> queries;
 
-    RMQ rmq;
+    // maps algorithms names to construction statistics
+    std::map<std::string, construction_stats> c_stats_map;
 
-    using query_type = std::pair<size_t, size_t>;
+    // maps ranges to queries statistics
+    // notice we have a statistic per query range
+    std::map<size_t, std::vector<queries_stats>> q_stats_map;
 
 public:
 
-    explicit Benchmark(const std::string &algorithm) : algorithm(algorithm){}
+    explicit Benchmark(std::vector<T> &data, std::map<size_t, std::vector<query_type>> &queries) : data(data), queries(queries) {}
 
-    template<typename Format = std::chrono::seconds>
-    void benchmark_construction(const std::vector<T> &data) const {
-        size_t checksum = 0;
-
+    template<class RMQ>
+    void operator()() {
         auto start = timer::now();
 
-        rmq = RMQ(data);
+        RMQ rmq = RMQ(data);
 
-        auto end =  timer::now();
+        const double time = std::chrono::time_cast<BuildTimeFormat>(timer::now() - start).count(); 
 
         do_not_optimize(rmq);
 
-        const double time = std::chrono::time_cast<Format>(stop - start).count() / double(runs); 
+        construction_stats c_stats = construction_stats(rmq.name(), time, rmq.size(), rmq.bpe());
 
-        c_stats(algorithm, time, rmq.size(), rmq.bpe());
+        // assumes names are unique
+        c_stats_map[rmq.name()] = c_stats;
+
+        for(const auto &q : queries) {
+            query_range(rmq, q.first, q.second);
+        }
     }
 
-    template<typename Format = std::chrono::nanoseconds>
-    void benchmark_queries(const std::vector<query_type> &queries) const {
+    void save(const std::ofstream &c_output, const std::ofstream &q_output) const {
+        c_output << construction_stats::csv_header << std::endl;
 
-        const size_t range = queries[0].second - queries[0].first + 1;
+        for(const auto &entry : c_stats_map) {
+            const std::string algorithm = entry.first;
+            const construction_stats c_stats = entry.second;
+            c_output << algorithm << "," << c_stats.time << "," << c_stats.space << "," <<  c_stats.bpe << std::endl;
+        } 
 
+        q_output << queries_stats::csv_header << std::endl;
+
+        for(const auto &entry : q_stats_map) {
+            const size_t range = entry.first;
+            for(const auto &q_stats : entry.second)
+                q_output << q_stats.algorithm << "," << range << "," <<  q_stats.time << std::endl;
+        }
+    }
+
+private:
+
+    template<class RMQ>
+    void query_range(RMQ &rmq, const size_t range, const std::vector<query_type> queries) {
         size_t checksum = 0;
 
-        // introduces a dependency between subsequent calls to avoid
-        // the compiler to interleave their code
         auto f = [](query_type query, dependency) 
                     { return rmq.query(query.first, query.second) ^ dependency; };
 
@@ -62,44 +90,10 @@ public:
             checksum ^= f(query, checksum);
         }
 
-        auto end =  timer::now();
-
         do_not_optimize(checksum);
 
-        const double time = std::chrono::time_cast<Format>(stop - start).count() / double(queries.size()); 
+        const double time = std::chrono::time_cast<QueriesTimeFormat>(timer::now() - start).count();
 
-        q_stats.emplace_back(algorithm, range, time);
+        q_stats_map[range].emplace_back((rmq.name(), time));
     }
-
-    construction_stats get_construction_stats() const {
-        return c_stats;
-    }
-
-    std::vector<queries_stats> get_queries_stats() const {
-        return q_stats;
-    }
-
-    /**
-     * Intended usage:
-     * 
-     * eps = Benchmark<eps_rmq<..>>("eps_rmq_64");
-     * 
-     * ferrada = ..
-     * 
-     * gog = ..
-     * 
-     * const auto benchmarks = {eps_rmq, ferrada, gog};
-     * 
-     * for(const auto &benchmark : benchmarks)
-     * {
-     *  benchmark.benchmark_construction(data);
-     *  
-     *  for(const auto &ranges : ranges)
-     *      benchmark.benchmark_queries(queries[range]);
-     * }
-     * 
-     * print_construction_stats(benchmarks, c_output);
-     * 
-     * print_queries_stats(benchmarks, q_output);
-     */
 };
