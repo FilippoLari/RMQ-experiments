@@ -1,0 +1,9 @@
+[submodule "eps_rmq"]
+	path = competitors/eps_rmq
+	url = https://github.com/FilippoLari/eps_rmq
+[submodule "rmq"]
+	path = competitors/rmq
+	url = https://github.com/hferrada/rmq
+[submodule "succinct"]
+	path = competitors/succinct
+	url = https://github.com/ot/succinct
