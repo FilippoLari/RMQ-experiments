@@ -13,7 +13,7 @@ struct construction_stats {
     size_t space;
     double bpe;
 
-    construction_stats(const std::string algorithm, const double time, const size_t space, const double bpe) : 
+    construction_stats(const std::string &algorithm, const double time, const size_t space, const double bpe) : 
                         algorithm(algorithm), time(time), space(space), bpe(bpe) {}
 
 };
@@ -26,7 +26,7 @@ struct queries_stats {
     std::string algorithm;
     double time;
 
-    queries_stats(const std::string algorithm, const double time) : algorithm(algorithm), time(time) {}
+    queries_stats(const std::string &algorithm, const double time) : algorithm(algorithm), time(time) {}
 };
 
 const std::string queries_stats::csv_header = "algorithm,range,time";
