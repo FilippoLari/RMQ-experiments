@@ -50,6 +50,8 @@ public:
 
         c_stats_map.emplace(rmq.name(), construction_stats(rmq.name(), time, rmq.size(), rmq.bpe()));
 
+        std::cout << "Finished building " << rmq.name() << std::endl;
+
         for(const auto &q : queries) {
             query_range(rmq, q.first, q.second);
         }
@@ -105,7 +107,9 @@ private:
 
         do_not_optimize(checksum);
 
-        const double time = std::chrono::duration_cast<QueriesTimeFormat>(timer::now() - start).count();
+        const double time = std::chrono::duration_cast<QueriesTimeFormat>(timer::now() - start).count() / double(queries.size());
+
+        std::cout << "Finished querying " << rmq.name() << std::endl;
 
         auto it = q_stats_map.find(range);
 

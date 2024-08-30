@@ -8,6 +8,7 @@
 #include "benchmark.hpp"
 #include "type_list.hpp"
 #include "../competitors/eps_rmq_wrapper.hpp"
+#include "utils.hpp"
 
 int main(int argc, char* argv[]) {
     
@@ -15,11 +16,8 @@ int main(int argc, char* argv[]) {
                                 eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 128>,
                                 eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 256>>;*/
 
-    std::vector<int64_t> data = {1, 4, 5, 6, 5 ,2 ,8, 10};
-    std::map<size_t, std::vector<query_type>> queries;
-
-    std::vector<query_type> queries_3 = {std::make_pair(0,2), std::make_pair(3,5), std::make_pair(5,7)};
-    queries[3] = queries_3;
+    std::vector<int64_t> data = read_data<int64_t>("uniform_10M.bin");
+    std::map<size_t, std::vector<query_type>> queries = read_and_group_queries(40000, "queries_uniform_10M.bin");
 
     Benchmark<int64_t> benchmark(data, queries);
 
