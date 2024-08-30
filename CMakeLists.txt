@@ -11,13 +11,6 @@ if (COMPILER_SUPPORTS_MARCH_NATIVE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 endif ()
 
-add_library(benchmark_lib INTERFACE)
-target_include_directories(benchmark_lib INTERFACE competitors/)
+include_directories(${CMAKE_SOURCE_DIR}/competitors)
 
 add_subdirectory(benchmark)
-
-#add_subdirectory(experiments)
-
-#add_subdirectory(competitors)
-
-#add_subdirectory(tests)

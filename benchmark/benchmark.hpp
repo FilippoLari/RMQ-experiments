@@ -35,10 +35,11 @@ class Benchmark {
 
 public:
 
-    explicit Benchmark(std::vector<T> &data, std::map<size_t, std::vector<query_type>> &queries) : data(data), queries(queries) {}
+    explicit Benchmark(std::vector<T> &data, std::map<size_t, std::vector<query_type>> &queries) 
+                        : data(data), queries(queries) {}
 
     template<class RMQ>
-    void operator()() {
+    void run() {
         auto start = timer::now();
 
         RMQ rmq = RMQ(data);
@@ -53,6 +54,21 @@ public:
             query_range(rmq, q.first, q.second);
         }
     }
+
+    /*template<class RMQ>
+    void operator()() {
+        auto start = timer::now();
+
+        RMQ rmq = RMQ(data);
+
+        const double time = std::chrono::duration_cast<BuildTimeFormat>(timer::now() - start).count(); 
+
+        do_not_optimize(rmq);
+
+        for(const auto &q : queries) {
+            query_range(rmq, q.first, q.second);
+        }
+    }*/
 
     void save(std::ofstream &c_output, std::ofstream &q_output) const {
         c_output << construction_stats::csv_header << std::endl;
@@ -94,7 +110,7 @@ private:
         auto it = q_stats_map.find(range);
 
         if(it != q_stats_map.end()) {
-            it->second.emplace_back(rmq.name(), time);
+            q_stats_map[range].emplace_back(rmq.name(), time);
         } else {
             std::vector<queries_stats> q_stats;
             q_stats.emplace_back(rmq.name(), time);

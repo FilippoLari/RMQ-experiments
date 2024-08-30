@@ -1,1 +1,0 @@
-/usr/bin/c++  -fopenmp -O3 -march=native CMakeFiles/benchmark.dir/benchmark.cpp.o -o benchmark 
