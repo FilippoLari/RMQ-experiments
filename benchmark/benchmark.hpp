@@ -55,22 +55,9 @@ public:
         for(const auto &q : queries) {
             query_range(rmq, q.first, q.second);
         }
+
+        std::cout << "Finished querying " << rmq.name() << std::endl;
     }
-
-    /*template<class RMQ>
-    void operator()() {
-        auto start = timer::now();
-
-        RMQ rmq = RMQ(data);
-
-        const double time = std::chrono::duration_cast<BuildTimeFormat>(timer::now() - start).count(); 
-
-        do_not_optimize(rmq);
-
-        for(const auto &q : queries) {
-            query_range(rmq, q.first, q.second);
-        }
-    }*/
 
     void save(std::ofstream &c_output, std::ofstream &q_output) const {
         c_output << construction_stats::csv_header << std::endl;
@@ -108,8 +95,6 @@ private:
         do_not_optimize(checksum);
 
         const double time = std::chrono::duration_cast<QueriesTimeFormat>(timer::now() - start).count() / double(queries.size());
-
-        std::cout << "Finished querying " << rmq.name() << std::endl;
 
         auto it = q_stats_map.find(range);
 

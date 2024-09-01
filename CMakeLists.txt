@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(rmq_experiments)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -g -O3")
 
 set(CMAKE_CXX_STANDARD 20)
 

@@ -55,8 +55,8 @@ std::map<size_t, std::vector<query_type>> read_and_group_queries(const size_t qu
     file.read(reinterpret_cast<char*>(&total_queries), sizeof(total_queries));
 
     for(size_t i = 0; i < (total_queries / queries); ++i) {
-        query_type* data = new query_type[total_queries];
-        file.read(reinterpret_cast<char*>(data + i*queries), queries * sizeof(query_type));
+        query_type* data = new query_type[queries];
+        file.read(reinterpret_cast<char*>(data), queries * sizeof(query_type));
         const size_t range = data[0].second - data[0].first + 1;
         grouped_queries.emplace(range, std::vector<query_type>(data, data + queries));
     }

@@ -49,20 +49,23 @@ std::vector<int64_t> generate_pseudo_decreasing(const size_t n, const int64_t de
     return values;
 }
 
-std::vector<query_type> generate_queries(const size_t n, const size_t q, const size_t range) {
-    
+std::vector<query_type> generate_queries(const size_t n, const size_t q,
+                                         const std::vector<size_t> &ranges) {
     std::vector<query_type> queries;
-    queries.reserve(q);
-    
-    std::uniform_int_distribution<size_t> uniform_dis(0, n - range);
+    queries.reserve(q * ranges.size());
 
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    for(size_t i = 0; i < q; ++i) {
-        const size_t start = uniform_dis(gen);
-        const size_t end = start + range - 1;
-        queries.emplace_back(start, end);
+    for(const size_t range : ranges) {
+        std::uniform_int_distribution<size_t> uniform_dis(0, n - range);
+
+        for(size_t i = 0; i < q; ++i) {
+            const size_t start = uniform_dis(gen);
+            const size_t end = start + range - 1;
+            assert(end < n);
+            queries.emplace_back(start, end);
+        }
     }
 
     return queries;
@@ -70,15 +73,20 @@ std::vector<query_type> generate_queries(const size_t n, const size_t q, const s
 
 int main(int argc, char* argv[]) {
 
+    const size_t n = 1000000000;
+    const size_t q = 10000;
+
     //std::vector<int64_t> uniform_values = generate_uniform<int64_t>(100000000, 1, 1000000000);
 
-    std::vector<int64_t> uniform_values = generate_uniform<int64_t>(10000000, 1, 1000000000);
+    std::vector<int64_t> uniform_values = generate_uniform<int64_t>(n, 1, 10000000000);
 
-    write_data<int64_t>(uniform_values, "uniform_10M.bin");
+    write_data<int64_t>(uniform_values, "uniform_1B.bin");
 
-    std::vector<query_type> queries = generate_queries(10000000, 40000, 500);
+    std::vector<size_t> ranges = {10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000};
 
-    write_data<query_type>(queries, "queries_uniform_10M.bin");
+    std::vector<query_type> queries = generate_queries(n, q, ranges);
+
+    write_data<query_type>(queries, "queries_uniform_1B.bin");
 
     return 0;
 }
