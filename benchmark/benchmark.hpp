@@ -79,17 +79,31 @@ public:
 
 private:
 
+    inline void clean_cache() {
+        std::vector<int> dummy((1 << 24), 0);
+        
+    }
+
     template<class RMQ>
     void query_range(RMQ &rmq, const size_t range, const std::vector<query_type> queries) {
         size_t checksum = 0;
 
-        auto f = [&rmq](query_type query, size_t dependency) 
-                    { return rmq.query(query.first, query.second) ^ dependency; };
+        /*auto f = [&rmq](query_type query, size_t dependency) 
+                    { return rmq.query(query.first, query.second) ^ dependency; };*/
+
+        size_t checksum1 = 0;
+
+        // warm-up:
+        for(const auto &query : queries) {
+            checksum ^= rmq.query(query.first, query.second); 
+        }
+
+        do_not_optimize(checksum1);
 
         auto start = timer::now();
 
         for(const auto &query : queries) {
-            checksum ^= f(query, checksum);
+            checksum ^= rmq.query(query.first, query.second); //f(query, checksum);
         }
 
         do_not_optimize(checksum);

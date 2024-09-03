@@ -22,18 +22,19 @@ int main(int argc, char* argv[]) {
 
     Benchmark<int64_t> benchmark(data, queries);
 
-    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 64>>();
+    /*benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 64>>();
     benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 128>>();
     benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 256>>();
     benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 512>>();
     benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 1024>>();
-    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 2048>>();
-    benchmark.template run<sparse_table<int64_t, int64_t>>();
+    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 2048>>();*/
+    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 64>>();
+    benchmark.template run<sparse_table<int64_t, int32_t>>();
 
     //ForEach<Algorithms, Benchmark<int64_t>>::apply(benchmark);
 
-    std::ofstream c_output("build_time.csv");
-    std::ofstream q_output("query_time.csv");
+    std::ofstream c_output("build_time4.csv");
+    std::ofstream q_output("query_time4.csv");
 
     benchmark.save(c_output, q_output);
 
