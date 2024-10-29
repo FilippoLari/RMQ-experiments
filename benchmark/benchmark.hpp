@@ -52,6 +52,7 @@ public:
 
         std::cout << "Finished building " << rmq.name() << std::endl;
 
+        //std::cout << "Segments: " << rmq.segments() << std::endl;
         for(const auto &q : queries) {
             query_range(rmq, q.first, q.second);
         }
@@ -73,16 +74,11 @@ public:
         for(const auto &entry : q_stats_map) {
             const size_t range = entry.first;
             for(const auto &q_stats : entry.second)
-                q_output << q_stats.algorithm << "," << range << "," <<  q_stats.time << std::endl;
+                q_output << q_stats.algorithm << "," << range << "," <<  q_stats.time << "," << q_stats.bpe << std::endl;
         }
     }
 
 private:
-
-    inline void clean_cache() {
-        std::vector<int> dummy((1 << 24), 0);
-        
-    }
 
     template<class RMQ>
     void query_range(RMQ &rmq, const size_t range, const std::vector<query_type> queries) {
@@ -95,7 +91,7 @@ private:
 
         // warm-up:
         for(const auto &query : queries) {
-            checksum ^= rmq.query(query.first, query.second); 
+            checksum1 ^= rmq.query(query.first, query.second); 
         }
 
         do_not_optimize(checksum1);
@@ -113,10 +109,10 @@ private:
         auto it = q_stats_map.find(range);
 
         if(it != q_stats_map.end()) {
-            q_stats_map[range].emplace_back(rmq.name(), time);
+            q_stats_map[range].emplace_back(rmq.name(), time, rmq.bpe());
         } else {
             std::vector<queries_stats> q_stats;
-            q_stats.emplace_back(rmq.name(), time);
+            q_stats.emplace_back(rmq.name(), time, rmq.bpe());
             q_stats_map[range] = q_stats;
         }
     }

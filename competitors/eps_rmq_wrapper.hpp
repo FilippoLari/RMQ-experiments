@@ -17,4 +17,8 @@ public:
     inline double bpe() const {
         return double(this->size()) / double(this->data_count()); 
     }
+
+    inline size_t segments() const {
+        return this->segment_count();
+    }
 };

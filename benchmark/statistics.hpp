@@ -25,8 +25,10 @@ struct queries_stats {
 
     std::string algorithm;
     double time;
+    double bpe;
 
-    queries_stats(const std::string &algorithm, const double time) : algorithm(algorithm), time(time) {}
+    queries_stats(const std::string &algorithm, const double time, const double bpe) : 
+                    algorithm(algorithm), time(time), bpe(bpe) {}
 };
 
-const std::string queries_stats::csv_header = "algorithm,range,time";
+const std::string queries_stats::csv_header = "algorithm,range,time,bpe";
