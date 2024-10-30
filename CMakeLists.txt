@@ -13,4 +13,7 @@ endif ()
 
 include_directories(${CMAKE_SOURCE_DIR}/competitors)
 
+add_library(cxxopts INTERFACE)
+target_include_directories(cxxopts INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/lib/cxxopts/include)
+
 add_subdirectory(benchmark)

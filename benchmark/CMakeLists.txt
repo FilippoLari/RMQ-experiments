@@ -11,6 +11,5 @@ foreach(src_file ${BENCHMARK_SOURCES})
     # Create an executable target for each .cpp file
     add_executable(${base_name} ${src_file})
     
-    # Optionally, specify additional settings or libraries
-    # Example: target_link_libraries(${base_name} some_library)
+    target_link_libraries(${base_name} cxxopts)
 endforeach()
