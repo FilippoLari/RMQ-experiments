@@ -1,6 +1,6 @@
 #pragma once
 
-#include "eps_rmq/include/opt_eps_rmq.hpp"
+#include "eps_rmq/include/eps_rmq.hpp"
 
 template<typename K, typename Range, typename Pos,
  typename Floating = float, size_t Epsilon = 64>

@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
     cxxopts::Options options("Generator", "Generates all the synthetic datasets used in our experiments");
 
     options.add_options()
-        ("p,path", "Where to save the generated datasets")
+        ("p,path", "Where to save the generated datasets", cxxopts::value<std::string>())
         ("h,help", "Print the usage instructions");
 
     auto result = options.parse(argc, argv);
@@ -34,8 +34,8 @@ int main(int argc, char* argv[]) {
     std::vector<int64_t> pseudo_inc_100 = generate_pseudo_increasing(n, 100);
     write_data<int64_t>(pseudo_inc_100, path+"/"+"pseudo_inc_1B_100.bin");
 
-    std::vector<int64_t> pseudo_inc_1000 = generate_pseudo_increasing(n, 1000);
-    write_data<int64_t>(pseudo_inc_1000, path+"/"+"pseudo_inc_1B_1000.bin");
+    std::vector<int64_t> pseudo_inc_10000 = generate_pseudo_increasing(n, 10000);
+    write_data<int64_t>(pseudo_inc_10000, path+"/"+"pseudo_inc_1B_10000.bin");
 
     std::vector<int64_t> pseudo_dec_0 = generate_pseudo_decreasing(n, 0);
     write_data<int64_t>(pseudo_dec_0, path+"/"+"pseudo_dec_1B_0.bin");
@@ -43,8 +43,8 @@ int main(int argc, char* argv[]) {
     std::vector<int64_t> pseudo_dec_100 = generate_pseudo_decreasing(n, 100);
     write_data<int64_t>(pseudo_dec_100, path+"/"+"pseudo_dec_1B_100.bin");
 
-    std::vector<int64_t> pseudo_dec_1000 = generate_pseudo_decreasing(n, 1000);
-    write_data<int64_t>(pseudo_dec_1000, path+"/"+"pseudo_dec_1B_1000.bin");
+    std::vector<int64_t> pseudo_dec_10000 = generate_pseudo_decreasing(n, 10000);
+    write_data<int64_t>(pseudo_dec_10000, path+"/"+"pseudo_dec_1B_10000.bin");
 
     std::vector<size_t> ranges = {10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000};
     std::vector<query_type> queries = generate_queries(n, q, ranges);
