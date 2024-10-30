@@ -6,14 +6,6 @@
 #include <numeric>
 #include <vector>
 
-#pragma once
-
-#include <limits>
-#include <cstdlib>
-#include <climits>
-#include <numeric>
-#include <vector>
-
 template<typename K, typename Pos, size_t block_size>
 class block_decomposition {
     static_assert(std::is_integral_v<K>);
@@ -101,10 +93,6 @@ public:
         return min_pos;
     }
 
-    inline size_t data_count() const {
-        return n;
-    }
-
     inline size_t size() const {
         return ((block_minima.size() * sizeof(std::pair<K,Pos>)) 
                     + sizeof(n)) * CHAR_BIT;
@@ -117,5 +105,4 @@ public:
     inline double bpe() const {
         return double(size()) / double(n); 
     }
-
 };
