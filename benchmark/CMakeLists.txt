@@ -11,5 +11,5 @@ foreach(src_file ${BENCHMARK_SOURCES})
     # Create an executable target for each .cpp file
     add_executable(${base_name} ${src_file})
     
-    target_link_libraries(${base_name} cxxopts)
+    target_link_libraries(${base_name} cxxopts sdsl)
 endforeach()

@@ -83,10 +83,6 @@ private:
     template<class RMQ>
     void query_range(RMQ &rmq, const size_t range, const std::vector<query_type> queries) {
         size_t checksum = 0;
-
-        /*auto f = [&rmq](query_type query, size_t dependency) 
-                    { return rmq.query(query.first, query.second) ^ dependency; };*/
-
         size_t checksum1 = 0;
 
         // warm-up:
@@ -99,7 +95,7 @@ private:
         auto start = timer::now();
 
         for(const auto &query : queries) {
-            checksum ^= rmq.query(query.first, query.second); //f(query, checksum);
+            checksum ^= rmq.query(query.first, query.second);
         }
 
         do_not_optimize(checksum);

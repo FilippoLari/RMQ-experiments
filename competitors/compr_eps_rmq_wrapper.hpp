@@ -4,7 +4,7 @@
 
 template<typename K, typename Range, typename Pos,
  typename Floating = float, size_t Epsilon = 64>
-class compr_eps_rmq_wrapper : public compr_eps_rmq<K, Range, Pos, Floating, Epsilon> {
+class compr_eps_rmq_wrapper : public compressed_eps_rmq<K, Range, Pos, Floating, Epsilon> {
 
 public:
     

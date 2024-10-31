@@ -26,31 +26,31 @@ if [[ ! -d "$RES_DIR" ]]; then
 fi
 
 echo "Running the benchmark on the uniform sequence..."
-$BENCHMARK "$DATA_DIR/uniform_1B.bin" "$DATA_DIR/queries_1B.bin" $QUERIES "$RES_DIR/unif_build.csv" "$RES_DIR/unif_query.csv"
+$BENCHMARK -s "$DATA_DIR/uniform_1B.bin" -q "$DATA_DIR/queries_1B.bin" -n "$QUERIES" -b "$RES_DIR/unif_build.csv" -t "$RES_DIR/unif_query.csv"
 echo "Finished"
 
 echo "Running the benchmark on the pseudo-increasing sequence (delta = 0)..."
-$BENCHMARK "$DATA_DIR/pseudo_inc_1B_0.bin" "$DATA_DIR/queries_1B.bin" $QUERIES "$RES_DIR/pseudo_inc_0_build.csv" "$RES_DIR/pseudo_inc_0_query.csv"
+$BENCHMARK -s "$DATA_DIR/pseudo_inc_1B_0.bin" -q "$DATA_DIR/queries_1B.bin" -n "$QUERIES" -b "$RES_DIR/pseudo_inc_0_build.csv" -t "$RES_DIR/pseudo_inc_0_query.csv"
 echo "Finished"
 
 echo "Running the benchmark on the pseudo-increasing sequence (delta = 100)..."
-$BENCHMARK "$DATA_DIR/pseudo_inc_1B_100.bin" "$DATA_DIR/queries_1B.bin" $QUERIES "$RES_DIR/pseudo_inc_100_build.csv" "$RES_DIR/pseudo_inc_100_query.csv"
+$BENCHMARK -s "$DATA_DIR/pseudo_inc_1B_100.bin" -q "$DATA_DIR/queries_1B.bin" -n "$QUERIES" -b "$RES_DIR/pseudo_inc_100_build.csv" -t "$RES_DIR/pseudo_inc_100_query.csv"
 echo "Finished"
 
 echo "Running the benchmark on the pseudo-increasing sequence (delta = 10000)..."
-$BENCHMARK "$DATA_DIR/pseudo_inc_1B_10000.bin" "$DATA_DIR/queries_1B.bin" $QUERIES "$RES_DIR/pseudo_inc_10000_build.csv" "$RES_DIR/pseudo_inc_10000_query.csv"
+$BENCHMARK -s "$DATA_DIR/pseudo_inc_1B_10000.bin" -q "$DATA_DIR/queries_1B.bin" -n "$QUERIES" -b "$RES_DIR/pseudo_inc_10000_build.csv" -t "$RES_DIR/pseudo_inc_10000_query.csv"
 echo "Finished"
 
 echo "Running the benchmark on the pseudo-decreasing sequence (delta = 0)..."
-$BENCHMARK "$DATA_DIR/pseudo_dec_1B_0.bin" "$DATA_DIR/queries_1B.bin" $QUERIES "$RES_DIR/pseudo_dec_0_build.csv" "$RES_DIR/pseudo_dec_0_query.csv"
+$BENCHMARK -s "$DATA_DIR/pseudo_dec_1B_0.bin" -q "$DATA_DIR/queries_1B.bin" -n "$QUERIES" -b "$RES_DIR/pseudo_dec_0_build.csv" -t "$RES_DIR/pseudo_dec_0_query.csv"
 echo "Finished"
 
 echo "Running the benchmark on the pseudo-decreasing sequence (delta = 100)..."
-$BENCHMARK "$DATA_DIR/pseudo_dec_1B_100.bin" "$DATA_DIR/queries_1B.bin" $QUERIES "$RES_DIR/pseudo_dec_100_build.csv" "$RES_DIR/pseudo_dec_100_query.csv"
+$BENCHMARK -s "$DATA_DIR/pseudo_dec_1B_100.bin" -q "$DATA_DIR/queries_1B.bin" -n "$QUERIES" -b "$RES_DIR/pseudo_dec_100_build.csv" -t "$RES_DIR/pseudo_dec_100_query.csv"
 echo "Finished"
 
 echo "Running the benchmark on the pseudo-decreasing sequence (delta = 10000)..."
-$BENCHMARK "$DATA_DIR/pseudo_dec_1B_10000.bin" "$DATA_DIR/queries_1B.bin" $QUERIES "$RES_DIR/pseudo_dec_10000_build.csv" "$RES_DIR/pseudo_dec_10000_query.csv"
+$BENCHMARK -s "$DATA_DIR/pseudo_dec_1B_10000.bin" -q "$DATA_DIR/queries_1B.bin" -n "$QUERIES" -b "$RES_DIR/pseudo_dec_10000_build.csv" -t "$RES_DIR/pseudo_dec_10000_query.csv"
 echo "Finished"
 
 echo "All runs completed, results are saved in $RES_DIR"
