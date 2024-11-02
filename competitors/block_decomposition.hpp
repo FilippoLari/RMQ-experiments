@@ -11,7 +11,7 @@ class block_decomposition {
     static_assert(std::is_integral_v<K>);
     static_assert(std::is_integral_v<Pos>);
 
-    std::vector<std::pair<K, Pos>> block_minima;
+    std::vector<Pos> block_minima;
     std::vector<K> data;
 
     size_t n;
@@ -39,7 +39,7 @@ public:
                 } 
             }
 
-            block_minima.emplace_back(min_value, min_pos);
+            block_minima.push_back(min_pos);
         }
     }
 
@@ -76,9 +76,9 @@ public:
             }
 
             for(auto k = first_block + 1; k < last_block; ++k) {
-                if(block_minima[k].first < min_value) {
-                    min_value = block_minima[k].first;
-                    min_pos = block_minima[k].second;
+                if(data[block_minima[k]] < min_value) {
+                    min_value = data[block_minima[k]];
+                    min_pos = block_minima[k];
                 }
             }
 
@@ -94,7 +94,7 @@ public:
     }
 
     inline size_t size() const {
-        return ((block_minima.size() * sizeof(std::pair<K,Pos>)) 
+        return ((block_minima.size() * sizeof(Pos)) 
                     + sizeof(n)) * CHAR_BIT;
     }
 
