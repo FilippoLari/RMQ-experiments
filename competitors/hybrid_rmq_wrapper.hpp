@@ -1,6 +1,6 @@
 #pragma once
 
-#include "eps_rmq/include/hybrid_rmq.hpp"
+#include "FL-RMQ/include/hybrid_rmq.hpp"
 
 template<typename K, typename Range, typename Pos,
  typename Floating = float, size_t Threshold = 10000, size_t Epsilon = 64>

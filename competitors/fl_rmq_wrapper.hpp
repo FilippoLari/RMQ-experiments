@@ -1,17 +1,17 @@
 #pragma once
 
-#include "eps_rmq/include/compressed_eps_rmq.hpp"
+#include "FL-RMQ/include/fl_rmq.hpp"
 
 template<typename K, typename Range, typename Pos,
  typename Floating = float, size_t Epsilon = 64>
-class compr_eps_rmq_wrapper : public compressed_eps_rmq<K, Range, Pos, Floating, Epsilon> {
+class fl_rmq_wrapper : public FLRMQ<K, Range, Pos, Floating, Epsilon> {
 
 public:
     
-    compr_eps_rmq_wrapper(std::vector<K> data) : compressed_eps_rmq<K, Range, Pos, Floating, Epsilon>(data) {}
+    eps_rmq_wrapper(std::vector<K> data) : eps_rmq<K, Range, Pos, Floating, Epsilon>(data) {}
 
     static constexpr std::string name() {
-        return "compr_eps_rmq_" + std::to_string(Epsilon);
+        return "fl_rmq_" + std::to_string(Epsilon);
     }
 
     inline double bpe() const {

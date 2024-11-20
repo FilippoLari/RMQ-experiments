@@ -11,7 +11,7 @@
 #include "cxxopts.hpp"
 #include "utils.hpp"
 
-#include "../competitors/eps_rmq_wrapper.hpp"
+#include "../competitors/fl_rmq_wrapper.hpp"
 #include "../competitors/hybrid_rmq_wrapper.hpp"
 #include "../competitors/sparse_table.hpp"
 #include "../competitors/block_decomposition.hpp"
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     Benchmark<int64_t> benchmark(data, queries);
 
     // eps_rmq
-    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 64>>();
+    benchmark.template run<fl_rmq_wrapper<int64_t, int64_t, int64_t, float, 64>>();
 
     // sparse table
     benchmark.template run<sparse_table<int64_t, int64_t>>();
