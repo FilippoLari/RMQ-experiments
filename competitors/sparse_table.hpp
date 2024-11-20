@@ -7,7 +7,7 @@
 #include <vector>
 
 template<typename K, typename Pos>
-class sparse_table {
+class SparseTable {
     static_assert(std::is_integral_v<K>);
     static_assert(std::is_integral_v<Pos>);
 
@@ -18,9 +18,9 @@ class sparse_table {
 
 public:
 
-    sparse_table() = default;
+    SparseTable() = default;
 
-    explicit sparse_table(const std::vector<K> &data) : data(data), n(data.size()) {
+    explicit SparseTable(const std::vector<K> &data) : data(data), n(data.size()) {
         if(n == 0) [[unlikely]]
             return;
 
@@ -69,7 +69,7 @@ public:
     }
 
     static constexpr std::string name() {
-        return "sparse_table";
+        return "SparseTable";
     }
 
     inline double bpe() const {

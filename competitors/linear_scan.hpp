@@ -7,7 +7,7 @@
 #include <vector>
 
 template<typename K, typename Pos>
-class linear_scan {
+class LinearScan {
     static_assert(std::is_integral_v<K>);
     static_assert(std::is_integral_v<Pos>);
 
@@ -17,9 +17,9 @@ class linear_scan {
 
 public:
 
-    linear_scan() = default;
+    LinearScan() = default;
 
-    explicit linear_scan(const std::vector<K> &data) : data(data), n(data.size()) {}
+    explicit LinearScan(const std::vector<K> &data) : data(data), n(data.size()) {}
 
     /**
      * Returns the position of the minimum inside the interval [i,j]
@@ -55,7 +55,7 @@ public:
     }
 
     static constexpr std::string name() {
-        return "linear_scan";
+        return "LinearScan";
     }
 
     inline double bpe() const {

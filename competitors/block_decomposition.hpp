@@ -7,7 +7,7 @@
 #include <vector>
 
 template<typename K, typename Pos, size_t block_size>
-class block_decomposition {
+class BlockDecomposition {
     static_assert(std::is_integral_v<K>);
     static_assert(std::is_integral_v<Pos>);
 
@@ -18,9 +18,9 @@ class block_decomposition {
 
 public:
 
-    block_decomposition() = default;
+    BlockDecomposition() = default;
 
-    explicit block_decomposition(const std::vector<K> &data) : data(data), n(data.size()) {
+    explicit BlockDecomposition(const std::vector<K> &data) : data(data), n(data.size()) {
         if(n == 0) [[unlikely]]
             return;
 
@@ -99,7 +99,7 @@ public:
     }
 
     static constexpr std::string name() {
-        return "block_decomposition_" + std::to_string(block_size);
+        return "BlockDecomposition_" + std::to_string(block_size);
     }
 
     inline double bpe() const {

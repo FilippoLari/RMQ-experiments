@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     auto result = options.parse(argc, argv);
 
     if (result.count("help")) {
-        std::cout << options.help() << "\n";
+        std::cout << options.help() << std::endl;
         return 0;
     }
 
@@ -46,25 +46,30 @@ int main(int argc, char* argv[]) {
 
     Benchmark<int64_t> benchmark(data, queries);
 
-    // eps_rmq
-    benchmark.template run<fl_rmq_wrapper<int64_t, int64_t, int64_t, float, 64>>();
+    // FL-RMQ
+    benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 64>>();
+    benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 128>>();
+    benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 256>>();
+    benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 512>>();
+    benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 1024>>();
+    benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 2048>>();
 
     // sparse table
-    benchmark.template run<sparse_table<int64_t, int64_t>>();
+    benchmark.template run<SparseTable<int64_t, int64_t>>();
 
     // block decomposition
-    benchmark.template run<block_decomposition<int64_t, int32_t, 30>>(); // logn
-    benchmark.template run<block_decomposition<int64_t, int32_t, 163>>(); // n^(1/4)
-    benchmark.template run<block_decomposition<int64_t, int32_t, 1000>>(); // n^(1/3)
-    benchmark.template run<block_decomposition<int64_t, int32_t, 31622>>(); // sqrt(n)
+    benchmark.template run<BlockDecomposition<int64_t, int32_t, 30>>(); // logn
+    benchmark.template run<BlockDecomposition<int64_t, int32_t, 163>>(); // n^(1/4)
+    benchmark.template run<BlockDecomposition<int64_t, int32_t, 1000>>(); // n^(1/3)
+    benchmark.template run<BlockDecomposition<int64_t, int32_t, 31622>>(); // sqrt(n)
 
     // hybrid
     if(input_sequence.find("pseudo") != std::string::npos) {
-        benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 1000, 512>>();
-        benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 1000, 1024>>();
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, float, 1000, 512>>();
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, float, 1000, 1024>>();
     } else {
-        benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 10000, 32>>();
-        benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 10000, 64>>();
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, float, 10000, 32>>();
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, float, 10000, 64>>();
     }
 
     std::ofstream c_output(output_build);
