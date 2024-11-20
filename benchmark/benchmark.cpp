@@ -7,7 +7,6 @@
 #include <map>
 
 #include "benchmark.hpp"
-#include "type_list.hpp"
 #include "cxxopts.hpp"
 #include "utils.hpp"
 
@@ -56,6 +55,8 @@ int main(int argc, char* argv[]) {
 
     // sparse table
     benchmark.template run<SparseTable<int64_t, int64_t>>();
+
+    auto sqrt_dec = [](size_t n) { return size_t(sqrt(n)); };
 
     // block decomposition
     benchmark.template run<BlockDecomposition<int64_t, int32_t, 30>>(); // logn
