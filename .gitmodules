@@ -1,6 +1,3 @@
-[submodule "eps_rmq"]
-	path = competitors/eps_rmq
-	url = https://github.com/FilippoLari/eps_rmq
 [submodule "rmq"]
 	path = competitors/rmq
 	url = https://github.com/hferrada/rmq
@@ -10,3 +7,6 @@
 [submodule "lib/cxxopts"]
 	path = lib/cxxopts
 	url = https://github.com/jarro2783/cxxopts
+[submodule "competitors/FL-RMQ"]
+	path = competitors/FL-RMQ
+	url = https://github.com/FilippoLari/FL-RMQ
