@@ -12,7 +12,6 @@
 #include "utils.hpp"
 
 #include "../competitors/eps_rmq_wrapper.hpp"
-#include "../competitors/compr_eps_rmq_wrapper.hpp"
 #include "../competitors/hybrid_rmq_wrapper.hpp"
 #include "../competitors/sparse_table.hpp"
 #include "../competitors/block_decomposition.hpp"
@@ -49,22 +48,9 @@ int main(int argc, char* argv[]) {
 
     // eps_rmq
     benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 64>>();
-    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 128>>();
-    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 256>>();
-    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 512>>();
-    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 1024>>();
-    benchmark.template run<eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 2048>>();
-
-    // compressed version of eps_rmq using EF on the intercepts
-    benchmark.template run<compr_eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 64>>();
-    benchmark.template run<compr_eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 128>>();
-    benchmark.template run<compr_eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 256>>();
-    benchmark.template run<compr_eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 512>>();
-    benchmark.template run<compr_eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 1024>>();
-    benchmark.template run<compr_eps_rmq_wrapper<int64_t, int64_t, int64_t, float, 2048>>();
 
     // sparse table
-    benchmark.template run<sparse_table<int64_t, int32_t>>();
+    benchmark.template run<sparse_table<int64_t, int64_t>>();
 
     // block decomposition
     benchmark.template run<block_decomposition<int64_t, int32_t, 30>>(); // logn
@@ -72,13 +58,14 @@ int main(int argc, char* argv[]) {
     benchmark.template run<block_decomposition<int64_t, int32_t, 1000>>(); // n^(1/3)
     benchmark.template run<block_decomposition<int64_t, int32_t, 31622>>(); // sqrt(n)
 
-    /*  
-        hybrid: eps_rmq + block decomposition with blocks of size n^(1/3)
-        small values of eps because for ranges larger than 10000
-        the resulting distribution is very regular
-    */
-    benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 10000, 32>>();
-    benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 10000, 64>>();
+    // hybrid
+    if(input_sequence.find("pseudo") != std::string::npos) {
+        benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 1000, 512>>();
+        benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 1000, 1024>>();
+    } else {
+        benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 10000, 32>>();
+        benchmark.template run<hybrid_rmq_wrapper<int64_t, int64_t, int64_t, float, 10000, 64>>();
+    }
 
     std::ofstream c_output(output_build);
     std::ofstream q_output(output_time);

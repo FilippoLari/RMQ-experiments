@@ -50,6 +50,6 @@ int main(int argc, char* argv[]) {
     std::vector<query_type> queries = generate_queries(n, q, ranges);
 
     write_data<query_type>(queries, path+"/"+"queries_1B.bin");
-
+    
     return 0;
 }

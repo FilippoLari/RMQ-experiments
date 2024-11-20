@@ -52,7 +52,6 @@ public:
 
         std::cout << "Finished building " << rmq.name() << std::endl;
 
-        //std::cout << "Segments: " << rmq.segments() << std::endl;
         for(const auto &q : queries) {
             query_range(rmq, q.first, q.second);
         }
