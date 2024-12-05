@@ -10,3 +10,7 @@
 [submodule "competitors/FL-RMQ"]
 	path = competitors/FL-RMQ
 	url = https://github.com/FilippoLari/FL-RMQ
+	branch = main
+[submodule "competitors/sdsl-lite"]
+	path = competitors/sdsl-lite
+	url = https://github.com/kittobi1992/sdsl-lite

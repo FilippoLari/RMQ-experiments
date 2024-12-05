@@ -1,15 +1,5 @@
-# CMakeLists.txt in the benchmark directory
+add_executable(generator generator.cpp)
+target_link_libraries(generator cxxopts)
 
-# Collect all .cpp files in the benchmark directory
-file(GLOB_RECURSE BENCHMARK_SOURCES "*.cpp")
-
-# Add each .cpp file as an executable
-foreach(src_file ${BENCHMARK_SOURCES})
-    # Extract the base name (filename without extension)
-    get_filename_component(base_name ${src_file} NAME_WE)
-    
-    # Create an executable target for each .cpp file
-    add_executable(${base_name} ${src_file})
-    
-    target_link_libraries(${base_name} cxxopts)
-endforeach()
+add_executable(benchmark benchmark.cpp)
+target_link_libraries(benchmark cxxopts fl_rmq_lib ferrada_rmq_lib succinct_rmq_lib sdsl_lib)
