@@ -8,13 +8,15 @@ class SuccinctFLRMQWrapper : public SuccinctFLRMQ<K, Range, Pos, Floating, Epsil
 
 public:
     
-    SuccinctFLRMQWrapper(std::vector<K> data) : SuccinctFLRMQ<K, Range, Pos, Floating, Epsilon>(data) {}
+    size_t n;
+
+    SuccinctFLRMQWrapper(std::vector<K> data) : SuccinctFLRMQ<K, Range, Pos, Floating, Epsilon>(data), n(data.size()) {}
 
     static constexpr std::string name() {
         return "SuccFLRMQ_" + std::to_string(Epsilon);
     }
 
     inline double bpe() const {
-        return double(this->size()) / double(this->data_count()); 
+        return double(this->size()) / double(n); 
     }
 };
