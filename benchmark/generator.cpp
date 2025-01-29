@@ -21,27 +21,14 @@ int main(int argc, char* argv[]) {
 
     const std::string path = result["path"].as<std::string>();
 
-    const int64_t u = 1e10;
     const size_t n = 1e9;
     const size_t q = 1e4;
 
-    std::vector<int64_t> uniform_values = generate_uniform<int64_t>(n, 1, u);
+    std::vector<int64_t> uniform_values = generate_uniform<int64_t>(n, 1, n);
     write_data<int64_t>(uniform_values, path+"/"+"uniform_1B.bin");
-
-    std::vector<int64_t> pseudo_inc_0 = generate_pseudo_increasing(n, 0);
-    write_data<int64_t>(pseudo_inc_0, path+"/"+"pseudo_inc_1B_0.bin");
-
-    std::vector<int64_t> pseudo_inc_100 = generate_pseudo_increasing(n, 100);
-    write_data<int64_t>(pseudo_inc_100, path+"/"+"pseudo_inc_1B_100.bin");
 
     std::vector<int64_t> pseudo_inc_10000 = generate_pseudo_increasing(n, 10000);
     write_data<int64_t>(pseudo_inc_10000, path+"/"+"pseudo_inc_1B_10000.bin");
-
-    std::vector<int64_t> pseudo_dec_0 = generate_pseudo_decreasing(n, 0);
-    write_data<int64_t>(pseudo_dec_0, path+"/"+"pseudo_dec_1B_0.bin");
-
-    std::vector<int64_t> pseudo_dec_100 = generate_pseudo_decreasing(n, 100);
-    write_data<int64_t>(pseudo_dec_100, path+"/"+"pseudo_dec_1B_100.bin");
 
     std::vector<int64_t> pseudo_dec_10000 = generate_pseudo_decreasing(n, 10000);
     write_data<int64_t>(pseudo_dec_10000, path+"/"+"pseudo_dec_1B_10000.bin");

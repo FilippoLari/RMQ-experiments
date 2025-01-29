@@ -1,9 +1,9 @@
 #pragma once
 
+#include <fstream>
 #include <string>
 #include <vector>
 #include <chrono>
-#include <fstream>
 #include <map>
 
 #include "statistics.hpp"

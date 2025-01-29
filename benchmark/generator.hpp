@@ -21,26 +21,30 @@ std::vector<int64_t> generate_uniform(const size_t n, const T lo, const T hi, co
 }
 
 std::vector<int64_t> generate_pseudo_increasing(const size_t n, const int64_t delta, const uint seed = 42) {
-    std::uniform_int_distribution<int64_t> uniform_dis(-delta, delta);
+    //std::uniform_int_distribution<int64_t> uniform_dis(-delta, delta);
     std::vector<int64_t> values;
 
     std::mt19937 gen(seed);
 
     for(int64_t i = 0; i < n; ++i) {
-        values.push_back(std::max<int64_t>(i+uniform_dis(gen), 0));
+        std::uniform_int_distribution<int64_t> uniform_dis(i-delta, i+delta);
+        values.push_back(uniform_dis(gen));
+        //values.push_back(std::max<int64_t>(i+uniform_dis(gen), 0));
     } 
 
     return values;
 }
 
 std::vector<int64_t> generate_pseudo_decreasing(const size_t n, const int64_t delta, const uint seed = 42) {
-    std::uniform_int_distribution<int64_t> uniform_dis(-delta, delta);
+    //std::uniform_int_distribution<int64_t> uniform_dis(-delta, delta);
     std::vector<int64_t> values;
 
     std::mt19937 gen(seed);
 
     for(int64_t i = 0; i < n; ++i) {
-        values.push_back(std::max<int64_t>(n-i+uniform_dis(gen), 0));
+        std::uniform_int_distribution<int64_t> uniform_dis(n-i-delta, n-i+delta);
+        values.push_back(uniform_dis(gen));
+        //values.push_back(std::max<int64_t>(n-i+uniform_dis(gen), 0));
     } 
 
     return values;

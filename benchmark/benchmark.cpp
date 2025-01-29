@@ -20,6 +20,25 @@
 #include "../competitors/succinct_rmq_wrapper.hpp"
 #include "../competitors/sdsl_rmq_wrapper.hpp"
 
+template<typename K>
+void run_encoding_benchmark(Benchmark<K> &benchmark, const string &output_build,
+                                const string &output_time) {
+    /*benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 512>>();
+    benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 1024>>();
+    benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 2048>>();
+    benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 8192, 4096>>();*/
+
+    /*benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 512, 1024>>();
+    benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 1024, 2048>>();
+    benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 2048, 4096>>();
+    benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 8192, 4096, 8192>>();
+    benchmark.template run<FerradaRMQWrapper<int64_t>>();
+    benchmark.template run<SuccinctRMQWrapper<int64_t>>();
+    benchmark.template run<SdslRMQWrapper<int64_t, 1024, 128, 0>>();
+    benchmark.template run<SdslRMQWrapper<int64_t, 2048, 128, 0>>();
+    benchmark.template run<SdslRMQWrapper<int64_t, 4096, 128, 0>>();*/
+}
+
 int main(int argc, char* argv[]) {
     
     cxxopts::Options options("Benchmark", "Benchmarking program for various RMQ implementations");
@@ -50,14 +69,6 @@ int main(int argc, char* argv[]) {
 
     Benchmark<int64_t> benchmark(data, queries);
 
-    benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 512>>();
-    benchmark.template run<FerradaRMQWrapper<int64_t>>();
-    benchmark.template run<SuccinctRMQWrapper<int64_t>>();
-    benchmark.template run<SdslRMQWrapper<int64_t, 1024, 128, 0>>();
-    benchmark.template run<SdslRMQWrapper<int64_t, 2048, 128, 0>>();
-    benchmark.template run<SdslRMQWrapper<int64_t, 4096, 128, 0>>();
-
-    // FL-RMQ Syst
     /*benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 64>>();
     benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 128>>();
     benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 256>>();
@@ -66,22 +77,37 @@ int main(int argc, char* argv[]) {
     benchmark.template run<FLRMQWrapper<int64_t, int64_t, int64_t, float, 2048>>();*/
 
     // sparse table
-    //benchmark.template run<SparseTable<int64_t, int64_t>>();
+    if(input_sequence.find("english") != std::string::npos) {
+        benchmark.template run<SparseTable<int64_t, int64_t>>();
+    } else {
+        benchmark.template run<SparseTable<int64_t, int32_t>>();
+    }
 
     // block decomposition
-    /*benchmark.template run<BlockDecomposition<int64_t, int32_t, 30>>(); // logn
-    benchmark.template run<BlockDecomposition<int64_t, int32_t, 163>>(); // n^(1/4)
-    benchmark.template run<BlockDecomposition<int64_t, int32_t, 1000>>(); // n^(1/3)
-    benchmark.template run<BlockDecomposition<int64_t, int32_t, 31622>>(); // sqrt(n)*/
+    if(input_sequence.find("english") != std::string::npos) {
+        benchmark.template run<BlockDecomposition<int64_t, int64_t, 31>>(); // logn
+        benchmark.template run<BlockDecomposition<int64_t, int64_t, 216>>(); // n^(1/4)
+        benchmark.template run<BlockDecomposition<int64_t, int64_t, 1302>>(); // n^(1/3)
+        benchmark.template run<BlockDecomposition<int64_t, int64_t, 47014>>(); // sqrt(n)
+    } else {
+        benchmark.template run<BlockDecomposition<int64_t, int32_t, 29>>(); // logn
+        benchmark.template run<BlockDecomposition<int64_t, int32_t, 177>>(); // n^(1/4)
+        benchmark.template run<BlockDecomposition<int64_t, int32_t, 1000>>(); // n^(1/3)
+        benchmark.template run<BlockDecomposition<int64_t, int32_t, 31622>>(); // sqrt(n)
+    }
 
     // hybrid
-    /*if(input_sequence.find("pseudo") != std::string::npos) {
-        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, float, 1000, 512>>();
-        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, float, 1000, 1024>>();
+    /*
+    if(input_sequence.find("pseudo") != std::string::npos) {
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, int32_t, float, 1000, 31622, 512>>();
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, int32_t, float, 1000, 31622, 1024>>();
+    } else if(input_sequence.find("english") != std::string::npos) {
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, int64_t, float, 10000, 1302, 32>>();
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, int64_t, float, 10000, 1302, 64>>();
     } else {
-        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, float, 10000, 32>>();
-        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, float, 10000, 64>>();
-    }*/
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, int32_t, float, 10000, 1000, 32>>();
+        benchmark.template run<HBRMQWrapper<int64_t, int64_t, int64_t, int32_t, float, 10000, 1000, 64>>();
+    }
 
     std::ofstream c_output(output_build);
     std::ofstream q_output(output_time);
@@ -89,7 +115,7 @@ int main(int argc, char* argv[]) {
     benchmark.save(c_output, q_output);
 
     c_output.close();
-    q_output.close();
+    q_output.close();*/
 
     return 0;
 }
