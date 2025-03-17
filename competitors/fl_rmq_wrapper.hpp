@@ -5,17 +5,17 @@
 #include "FL-RMQ/include/fl_rmq.hpp"
 
 template<typename K, typename Range, typename Pos,
- typename Floating = float, size_t Epsilon = 64>
-class FLRMQWrapper : public FLRMQ<K, Range, Pos, Floating, Epsilon> {
+ typename Floating = float, size_t Samples = 0, size_t Epsilon = 64, bool Rightmost = true>
+class FLRMQWrapper : public FLRMQ<K, Range, Pos, Floating, Samples, Epsilon, Rightmost> {
 
     std::vector<K> data;
 
 public:
     
-    FLRMQWrapper(std::vector<K> data) : data(data), FLRMQ<K, Range, Pos, Floating, Epsilon>(data) {}
+    FLRMQWrapper(std::vector<K> data) : data(data), FLRMQ<K, Range, Pos, Floating, Samples, Epsilon, Rightmost>(data) {}
 
     size_t query(const size_t i, const size_t j) const {
-        return FLRMQ<K, Range, Pos, Floating, Epsilon>::query(data, i, j);
+        return FLRMQ<K, Range, Pos, Floating, Samples, Epsilon, Rightmost>::query(data, i, j);
     }
 
     static constexpr std::string name() {
@@ -24,9 +24,5 @@ public:
 
     inline double bpe() const {
         return double(this->size()) / double(this->data_count()); 
-    }
-
-    inline size_t segments() const {
-        return this->segment_count();
     }
 };
