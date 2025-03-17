@@ -14,7 +14,7 @@ public:
     SegmentTreeWrapper(std::vector<K> data) : data(data), SegmentTree<K, Pos>(data) {}
 
     size_t query(const size_t i, const size_t j) const {
-        return SegmentTree<K, Pos>::query(i, j);
+        return SegmentTree<K, Pos>::query(data, i, j);
     }
 
     static constexpr std::string name() {
