@@ -14,3 +14,6 @@
 [submodule "competitors/sdsl-lite"]
 	path = competitors/sdsl-lite
 	url = https://github.com/kittobi1992/sdsl-lite
+[submodule "competitors/hyperrmq"]
+	path = competitors/hyperrmq
+	url = https://github.com/zkou-ut/hyperrmq

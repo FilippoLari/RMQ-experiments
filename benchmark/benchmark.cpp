@@ -19,6 +19,7 @@
 #include "../competitors/ferrada_rmq_wrapper.hpp"
 #include "../competitors/succinct_rmq_wrapper.hpp"
 #include "../competitors/sdsl_rmq_wrapper.hpp"
+#include "../competitors/hyperrmq_wrapper.hpp"
 
 template<typename K>
 void run_encoding_benchmark(Benchmark<K> &benchmark, const std::string &input_sequence, 
@@ -42,6 +43,11 @@ void run_encoding_benchmark(Benchmark<K> &benchmark, const std::string &input_se
     benchmark.template run<SdslRMQWrapper<int64_t, 1024, 128, 0>>();
     benchmark.template run<SdslRMQWrapper<int64_t, 2048, 128, 0>>();
     benchmark.template run<SdslRMQWrapper<int64_t, 4096, 128, 0>>();
+
+    benchmark.template run<HyperRMQWrapper<64>>();
+    benchmark.template run<HyperRMQWrapper<128>>();
+    benchmark.template run<HyperRMQWrapper<256>>();
+    benchmark.template run<HyperRMQWrapper<512>>();
 
     std::ofstream c_output(output_build);
     std::ofstream q_output(output_time);

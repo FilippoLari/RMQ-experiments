@@ -11,6 +11,10 @@ if (COMPILER_SUPPORTS_MARCH_NATIVE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 endif ()
 
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNDEBUG")
+endif()
+
 include_directories(competitors)
 
 add_library(fl_rmq_lib INTERFACE)
@@ -38,6 +42,10 @@ target_include_directories(succinct_rmq_lib PUBLIC ${CMAKE_SOURCE_DIR}/competito
 file(GLOB SDSL_LITE_SOURCES ${CMAKE_SOURCE_DIR}/competitors/sdsl-lite/lib/*.cpp)
 add_library(sdsl_lib STATIC ${SDSL_LITE_SOURCES})
 target_include_directories(sdsl_lib PUBLIC ${CMAKE_SOURCE_DIR}/competitors/sdsl-lite/include/sdsl)
+
+file(GLOB HYPERRMQ_SOURCES ${CMAKE_SOURCE_DIR}/competitors/hyperrmq/src/*.cpp)
+add_library(hyperrmq_lib STATIC ${HYPERRMQ_SOURCES})
+target_include_directories(hyperrmq_lib PUBLIC ${CMAKE_SOURCE_DIR}/competitors/hyperrmq/include)
 
 add_library(cxxopts INTERFACE)
 target_include_directories(cxxopts INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/lib/cxxopts/include)
