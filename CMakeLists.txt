@@ -39,9 +39,9 @@ file(GLOB SUCCINCT_SOURCES ${CMAKE_SOURCE_DIR}/competitors/succinct/*.cpp)
 add_library(succinct_rmq_lib STATIC ${SUCCINCT_SOURCES})
 target_include_directories(succinct_rmq_lib PUBLIC ${CMAKE_SOURCE_DIR}/competitors/succinct)
 
-file(GLOB SDSL_LITE_SOURCES ${CMAKE_SOURCE_DIR}/competitors/sdsl-lite/lib/*.cpp)
-add_library(sdsl_lib STATIC ${SDSL_LITE_SOURCES})
-target_include_directories(sdsl_lib PUBLIC ${CMAKE_SOURCE_DIR}/competitors/sdsl-lite/include/sdsl)
+#file(GLOB SDSL_LITE_SOURCES ${CMAKE_SOURCE_DIR}/competitors/sdsl-lite/lib/*.cpp)
+#add_library(sdsl_lib STATIC ${SDSL_LITE_SOURCES})
+#target_include_directories(sdsl_lib PUBLIC ${CMAKE_SOURCE_DIR}/competitors/sdsl-lite/include/sdsl)
 
 file(GLOB HYPERRMQ_SOURCES ${CMAKE_SOURCE_DIR}/competitors/hyperrmq/src/*.cpp)
 add_library(hyperrmq_lib STATIC ${HYPERRMQ_SOURCES})

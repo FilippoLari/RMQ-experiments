@@ -21,6 +21,9 @@
 #include "../competitors/sdsl_rmq_wrapper.hpp"
 #include "../competitors/hyperrmq_wrapper.hpp"
 
+#include "../competitors/FL-RMQ/libsais/include/libsais64.h"
+#include "../competitors/FL-RMQ/libsais/include/libsais.h"
+
 template<typename K>
 void run_encoding_benchmark(Benchmark<K> &benchmark, const std::string &input_sequence, 
                             const std::string &output_build, const std::string &output_time) {
@@ -30,24 +33,37 @@ void run_encoding_benchmark(Benchmark<K> &benchmark, const std::string &input_se
         benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 0, 2048>>();
         benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 0, 4096>>();
         benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 0, 8192>>();
-    } else {
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 512, 1024, 1024>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 2048, 2048>>();
+    } else if(input_sequence.find("english") != std::string::npos) {
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 512, 4096, 1024>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 4096, 2048>>();
         benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 4096, 4096>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 8192, 8192>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 4096, 8192>>();
+    } else {
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 512, 4096, 1024>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 4096, 2048>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 4096, 4096>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 4096, 8192>>();
     }
 
     benchmark.template run<FerradaRMQWrapper<int64_t>>();
     benchmark.template run<SuccinctRMQWrapper<int64_t>>();
 
-    benchmark.template run<SdslRMQWrapper<int64_t, 1024, 128, 0>>();
-    benchmark.template run<SdslRMQWrapper<int64_t, 2048, 128, 0>>();
-    benchmark.template run<SdslRMQWrapper<int64_t, 4096, 128, 0>>();
-
     benchmark.template run<HyperRMQWrapper<64>>();
     benchmark.template run<HyperRMQWrapper<128>>();
     benchmark.template run<HyperRMQWrapper<256>>();
     benchmark.template run<HyperRMQWrapper<512>>();
+
+    if(input_sequence.find("pseudo") != std::string::npos) {
+        benchmark.template run<SdslRMQWrapper<int64_t, 0, 1024, 0>>();
+        benchmark.template run<SdslRMQWrapper<int64_t, 0, 2048, 0>>();
+        benchmark.template run<SdslRMQWrapper<int64_t, 0, 1024, 1024>>();
+        benchmark.template run<SdslRMQWrapper<int64_t, 0, 2048, 2048>>();
+    } else {
+        benchmark.template run<SdslRMQWrapper<int64_t, 4096, 1024, 0>>();
+        benchmark.template run<SdslRMQWrapper<int64_t, 4096, 2048, 0>>();
+        benchmark.template run<SdslRMQWrapper<int64_t, 4096, 1024, 1024>>();
+        benchmark.template run<SdslRMQWrapper<int64_t, 4096, 2048, 2048>>();
+    }
 
     std::ofstream c_output(output_build);
     std::ofstream q_output(output_time);
@@ -104,12 +120,12 @@ void run_indexing_benchmark(Benchmark<K> &benchmark, const std::string &input_se
 }
 
 int main(int argc, char* argv[]) {
-    
+
     cxxopts::Options options("Benchmark", "Benchmarking program for various RMQ implementations");
 
     options.add_options()
         ("i,indexing", "Run the benchmark using the indexing data structures, if not provided uses the encodings",
-             cxxopts::value<bool>()->default_value("false"))
+            cxxopts::value<bool>()->default_value("false"))
         ("s,sequence", "Path to the input sequence", cxxopts::value<std::string>())
         ("q,queries", "Path to the queries sequence", cxxopts::value<std::string>())
         ("n,num_queries", "Number of queries", cxxopts::value<int>())
@@ -120,12 +136,12 @@ int main(int argc, char* argv[]) {
     auto result = options.parse(argc, argv);
 
     if (result.count("help")) {
-        std::cout << options.help() << std::endl;
+        std::cout << options.help({""}) << std::endl;
         return 0;
     }
 
     const bool indexing = result["indexing"].as<bool>();
-    
+
     const std::string input_sequence = result["sequence"].as<std::string>();
     const std::string input_queries = result["queries"].as<std::string>();
 

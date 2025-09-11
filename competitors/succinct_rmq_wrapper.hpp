@@ -13,7 +13,7 @@ class SuccinctRMQWrapper {
 
 public:
     
-    SuccinctRMQWrapper(std::vector<K> data) : rmq(data), n(data.size()) {}
+    SuccinctRMQWrapper(std::vector<K> &data) : rmq(data), n(data.size()) {}
 
     static constexpr std::string name() {
         return "SuccinctRMQ";

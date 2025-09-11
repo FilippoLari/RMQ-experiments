@@ -17,3 +17,4 @@
 [submodule "competitors/hyperrmq"]
 	path = competitors/hyperrmq
 	url = https://github.com/zkou-ut/hyperrmq
+	branch = fix-overflow

@@ -12,7 +12,7 @@ class FLRMQWrapper : public FLRMQ<K, Range, Pos, Floating, Samples, Epsilon, Rig
 
 public:
     
-    FLRMQWrapper(std::vector<K> data) : data(data), FLRMQ<K, Range, Pos, Floating, Samples, Epsilon, Rightmost>(data) {}
+    FLRMQWrapper(std::vector<K> &data) : data(data), FLRMQ<K, Range, Pos, Floating, Samples, Epsilon, Rightmost>(data) {}
 
     size_t query(const size_t i, const size_t j) const {
         return FLRMQ<K, Range, Pos, Floating, Samples, Epsilon, Rightmost>::query(data, i, j);

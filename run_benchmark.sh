@@ -11,11 +11,11 @@ DATA_DIR="$3" # Full path to the datasets directory
 RES_DIR="$4" # Full path to where the results will be saved
 QUERIES=10000
 
-VALID_INDEXING=("indexing" "encoding")
+VALID_TYPES=("indexing" "encoding")
 
-if [[ ! " ${VALID_INDEXING[@]} " =~ " ${INDEXING} " ]]; then
+if [[ ! " ${VALID_TYPES[@]} " =~ " ${TYPE} " ]]; then
     echo "Error: Invalid type '$INDEXING'"
-    echo "Allowed values: ${VALID_INDEXING[*]}"
+    echo "Allowed values: ${VALID_TYPES[*]}"
     exit 1
 fi
 

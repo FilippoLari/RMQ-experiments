@@ -11,7 +11,7 @@ class BlockDecompositionWrapper : public BlockDecomposition<K, Pos, BlockSize> {
 
 public:
     
-    BlockDecompositionWrapper(std::vector<K> data) : data(data), BlockDecomposition<K, Pos, BlockSize>(data) {}
+    BlockDecompositionWrapper(std::vector<K> &data) : data(data), BlockDecomposition<K, Pos, BlockSize>(data) {}
 
     size_t query(const size_t i, const size_t j) const {
         return BlockDecomposition<K, Pos, BlockSize>::query(data, i, j);

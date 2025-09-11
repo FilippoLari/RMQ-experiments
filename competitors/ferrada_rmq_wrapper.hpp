@@ -12,7 +12,7 @@ class FerradaRMQWrapper {
 
 public:
     
-    FerradaRMQWrapper(std::vector<K> data) : rmq(data.data(), data.size()), n(data.size()) {}
+    FerradaRMQWrapper(std::vector<K> &data) : rmq(data.data(), data.size()), n(data.size()) {}
 
     static constexpr std::string name() {
         return "FerradaRMQ";
