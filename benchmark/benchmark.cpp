@@ -29,20 +29,20 @@ void run_encoding_benchmark(Benchmark<K> &benchmark, const std::string &input_se
                             const std::string &output_build, const std::string &output_time) {
     // FL-RMQ
     if(input_sequence.find("pseudo") != std::string::npos) {
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 512, 0, 1024>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 0, 2048>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 0, 4096>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 0, 8192>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 512, 0>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 1024, 0>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 2048, 0>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 8192, 4096, 0>>();
     } else if(input_sequence.find("english") != std::string::npos) {
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 512, 4096, 1024>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 4096, 2048>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 4096, 4096>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 4096, 8192>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 512, 4096>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 1024, 4096>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 2048, 4096>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 8192, 4096, 4096>>();
     } else {
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 512, 4096, 1024>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 4096, 2048>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 4096, 4096>>();
-        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 4096, 8192>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 1024, 512, 4096>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 2048, 1024, 4096>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 4096, 2048, 4096>>();
+        benchmark.template run<SuccinctFLRMQWrapper<int64_t, int64_t, int64_t, float, 8192, 4096, 4096>>();
     }
 
     benchmark.template run<FerradaRMQWrapper<int64_t>>();
